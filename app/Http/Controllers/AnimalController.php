@@ -25,9 +25,10 @@ class AnimalController extends Controller
             $sortDirection = 'desc';
         }
 
-        $animals = Animal::orderBy($sortColumn, $sortDirection)->get();
+    $animals = Animal::orderBy($sortColumn, $sortDirection)->get();
+    $latestAnimals = Animal::orderBy('created_at', 'desc')->take(6)->get();
 
-        return view('animals.index', compact('animals'));
+    return view('animals.index', compact('animals', 'latestAnimals'));
     }
 
     public function show(Animal $animal)
@@ -128,14 +129,14 @@ class AnimalController extends Controller
 
         // Generate a unique filename
         $filename = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-        
+
         // Get image info
         $imageInfo = getimagesize($uploadedFile->getPathname());
         if (!$imageInfo) {
             // If can't get image info, store original
             return Storage::disk('public')->put('animals', $uploadedFile);
         }
-        
+
         $originalWidth = $imageInfo[0];
         $originalHeight = $imageInfo[1];
         $mimeType = $imageInfo['mime'];
@@ -185,7 +186,7 @@ class AnimalController extends Controller
 
         // Create new image with desired dimensions
         $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-        
+
         // Preserve transparency for PNG and GIF
         if ($mimeType === 'image/png' || $mimeType === 'image/gif') {
             imagealphablending($resizedImage, false);
@@ -199,7 +200,7 @@ class AnimalController extends Controller
 
         // Save the resized image
         $storagePath = storage_path('app/public/animals/' . $filename);
-        
+
         // Create directory if it doesn't exist
         if (!file_exists(dirname($storagePath))) {
             mkdir(dirname($storagePath), 0755, true);

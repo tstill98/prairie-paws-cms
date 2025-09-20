@@ -3,6 +3,26 @@
 @section('title', 'Adoptable Animals')
 
 @section('content')
+    <div class="gallery-section mb-6">
+        <h2 class="section-title">Adoptable Animals</h2>
+        <div class="gallery-grid">
+            @forelse($latestAnimals as $animal)
+                <div class="gallery-item">
+                    <a href="{{ route('animals.show', $animal) }}">
+                        @if($animal->photo_path)
+                            <img src="{{ asset(Storage::url($animal->photo_path)) }}" alt="{{ $animal->name }}" class="animal-thumb">
+                        @else
+                            <div class="no-photo">No Photo</div>
+                        @endif
+                        <div class="gallery-caption">{{ $animal->name }}</div>
+                    </a>
+                </div>
+            @empty
+                <p class="text-muted">No recent animals found.</p>
+            @endforelse
+        </div>
+    </div>
+
     <div class="card">
         <h2 class="page-title">Adoptable Animals</h2>
 
@@ -22,7 +42,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Photo</th>
+                            <th></th>
                             <th class="sortable-header">
                                 <a href="{{ route('animals.index', ['sort' => 'name', 'direction' => Request::get('sort') == 'name' && Request::get('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-link">
                                     Name
@@ -59,7 +79,7 @@
                                     @endif
                                 </a>
                             </th>
-                            <th>Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
