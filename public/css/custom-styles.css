@@ -19,7 +19,9 @@ body {
 
 /* Header styles */
 .header {
-    background-color: #2563eb;
+    background: #CAC531;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #F3F9A7, #CAC531);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #F3F9A7, #CAC531); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     color: white;
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
